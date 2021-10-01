@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #define PORT 8000
-#define BUFFER_SIZE 21
+#define BUFFER_SIZE 22
 
 int main(void) {
     struct sockaddr_in server, client;
@@ -77,11 +77,11 @@ int main(void) {
 
             int first, second;
             sscanf(buffer, "%d+%d", &first, &second);
-            char result[10];
-            sprintf(result, "%d", first + second);
+            char result[BUFFER_SIZE];
+            sprintf(result, "%lld", (long long) first + second);
             printf("Result: %d + %d = %s\n", first, second, result);
 
-            if (send(connection_fd, result, 10, 0) < 0) {
+            if (send(connection_fd, result, BUFFER_SIZE, 0) < 0) {
                 perror("Client write failed\n");
                 close(connection_fd);
                 close(socket_fd);

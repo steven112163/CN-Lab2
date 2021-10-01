@@ -8,6 +8,7 @@
 
 #define ADDRESS "127.0.0.1"
 #define PORT 8000
+#define BUFFER_SIZE 22
 
 int main(void) {
     struct sockaddr_in client;
@@ -39,10 +40,10 @@ int main(void) {
     char close_string[] = "close";
     while (1) {
         printf("Enter two integers (e.g. 1+1): ");
-        char question[21];
+        char question[BUFFER_SIZE];
         scanf("%s", question);
 
-        if (send(socket_fd, question, 21, 0) < 0) {
+        if (send(socket_fd, question, BUFFER_SIZE, 0) < 0) {
             perror("Client write failed\n");
             close(socket_fd);
             exit(EXIT_FAILURE);
@@ -51,8 +52,8 @@ int main(void) {
         if (strcmp(question, exit_string) == 0 || strcmp(question, close_string) == 0)
             break;
 
-        char result[10];
-        int read = recv(socket_fd, result, 10, 0);
+        char result[BUFFER_SIZE];
+        int read = recv(socket_fd, result, BUFFER_SIZE, 0);
         if (read < 0) {
             perror("Client read failed\n");
             close(socket_fd);
